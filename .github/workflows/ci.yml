@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  build:
+  build-and-deploy:
     runs-on: self-hosted
     steps:
       - name: Checkout do código.
@@ -15,21 +15,21 @@ jobs:
         uses: actions/setup-go@v5
         with:
           go-version: '1.21'
-
-      - name: Instalar as dependências.
-        run: go mod tidy
       - name: Compilar a aplicação para verificar se não existem erros de compilação.
-        run: go build -v ./...
+        run: go build ./...
       - name: Executar os testes unitários da aplicação.
         run: go test ./...
-  deploy:
-    needs: build
-    runs-on: self-hosted
-    steps:
-      - name: Configurar SSH.
-        uses: webfactory/ssh-agent@v0.9.0
-        with:
-          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+      - name: Reiniciar o serviço go-notes.
+        run: sudo systemctl restart go-notes.service
 
-      - name: Executar script de deploy no servidor.
-        run: ssh -o StrictHostKeyChecking=no appuser@192.168.56.101 'bash /home/appuser/deploy.sh'
+  # deploy:
+    # needs: build
+    # runs-on: ubuntu-latest
+    # steps:
+      # - name: Configurar SSH.
+        # uses: webfactory/ssh-agent@v0.9.0
+        # with:
+          # ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      # - name: Executar script de deploy no servidor.
+        # run: ssh -o StrictHostKeyChecking=no appuser@192.168.56.101 'bash /home/appuser/deploy.sh'
