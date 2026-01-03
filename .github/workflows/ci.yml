@@ -13,7 +13,7 @@ jobs:
       - name: Checkout do código.
         uses: actions/checkout@v4
 
-      - name: Configurar o Go.
+      - name: Configurar o ambiente Go.
         uses: actions/setup-go@v5
         with:
           go-version: '1.21'
@@ -21,8 +21,8 @@ jobs:
       - name: Instalar as dependências.
         run: go mod tidy
 
-      - name: Compilar a aplicação.
+      - name: Compilar a aplicação para verificar se não existem erros de compilação.
         run: go build -v ./...
 
-      - name: Executar os testes.
+      - name: Executar os testes unitários da aplicação.
         run: go test ./...
