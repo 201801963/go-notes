@@ -1,4 +1,4 @@
-name: Go CI
+name: Go CI/CD
 
 on:
   push:
@@ -8,11 +8,9 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout do código.
         uses: actions/checkout@v4
-
       - name: Configurar o ambiente Go.
         uses: actions/setup-go@v5
         with:
@@ -20,9 +18,18 @@ jobs:
 
       - name: Instalar as dependências.
         run: go mod tidy
-
       - name: Compilar a aplicação para verificar se não existem erros de compilação.
         run: go build -v ./...
-
       - name: Executar os testes unitários da aplicação.
         run: go test ./...
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Configurar SSH.
+        uses: webfactory/ssh-agent@v0.8.1
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Executar script de deploy no servidor.
+        run: ssh -o StrictHostKeyChecking=no appuser@192.168.56.101 'bash /home/appuser/deploy.sh'
