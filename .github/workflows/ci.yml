@@ -7,7 +7,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
       - name: Checkout do código.
         uses: actions/checkout@v4
@@ -24,7 +24,7 @@ jobs:
         run: go test ./...
   deploy:
     needs: build
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
       - name: Configurar SSH.
         uses: webfactory/ssh-agent@v0.9.0
