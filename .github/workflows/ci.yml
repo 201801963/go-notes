@@ -20,8 +20,9 @@ jobs:
         run: go build ./...
       - name: Executar os testes unitários da aplicação.
         run: go test ./...
+
       - name: Reiniciar o serviço go-notes.
-        run: systemctl restart go-notes.service
+        run: sudo systemctl restart go-notes.service
 
   deploy:
     needs: build
