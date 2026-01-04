@@ -22,7 +22,7 @@ jobs:
 
   deploy:
     needs: build
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
       - name: Configurar o SSH.
         uses: webfactory/ssh-agent@v0.9.0
@@ -31,4 +31,4 @@ jobs:
       - name: Executar o script de deploy no servidor.
         run: ssh -o StrictHostKeyChecking=no appuser@192.168.56.101 'bash /home/appuser/deploy.sh'
       - name: Reiniciar o serviço go-notes.
-        run: sudo systemctl restart go-notes.service
+        run: ssh -o StrictHostKeyChecking=no appuser@192.168.56.101 'sudo systemctl restart go-notes.service'
