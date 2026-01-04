@@ -21,7 +21,7 @@ jobs:
       - name: Executar os testes unitários da aplicação.
         run: go test ./...
       - name: Reiniciar o serviço go-notes.
-        run: sudo -n systemctl restart go-notes.service
+        run: systemctl restart go-notes.service
 
   deploy:
     needs: build
