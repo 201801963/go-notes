@@ -29,6 +29,6 @@ jobs:
         with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
       - name: Executar o script de deploy no servidor.
-        run: ssh -o StrictHostKeyChecking=no appuser@192.168.56.101 'bash /home/appuser/deploy.sh'
+        run: ssh -o StrictHostKeyChecking=no appuser@192.168.93.3 'bash /home/appuser/deploy.sh'
       - name: Reiniciar o serviço go-notes.
-        run: ssh -o StrictHostKeyChecking=no appuser@192.168.56.101 'sudo systemctl restart go-notes.service'
+        run: ssh -o StrictHostKeyChecking=no appuser@192.168.93.3 'sudo systemctl restart go-notes.service'
